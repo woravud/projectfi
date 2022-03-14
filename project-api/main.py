@@ -2,7 +2,9 @@ import os
 import sys
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI ,status
+import models
+import registerBase
 
 from db import init_db , database
 from settings import cfg
@@ -34,6 +36,14 @@ if cfg.MODE == "dev":
 async def read_root():
     message = f"Hello world! From FastAPI . Using Python {version}"
     return {"message": message}
+
+app.include_router(
+    registerBase.router,
+    prefix="/info",
+    tags=["Trainee_info_dev"],
+    responses={status.HTTP_404_NOT_FOUND: {"description": "info Not Found"}}
+)
+
 
 
 @app.on_event("startup")

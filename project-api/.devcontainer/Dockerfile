@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.10-slim-bullseye  
 
 LABEL maintainer="Woravud kanokpich Surachat <kanokpich.c@ku.th>"
 
@@ -43,3 +43,4 @@ ENV PYTHONPATH=/app
 
 EXPOSE 8000
 CMD ["/start.sh"]
+
