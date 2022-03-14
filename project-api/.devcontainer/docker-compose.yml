@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  api:
+    build: 
+      context: ./project-api/.devcontainer
+      dockerfile: Dockerfile.dev
+    hostname: project-api/
+    volumes:
+      - ./project-api:/app:cached
+    init: true
+    command:  ['sleep', 'infinity']
