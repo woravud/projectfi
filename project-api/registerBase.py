@@ -5,13 +5,13 @@ from sqlalchemy import delete, insert, select, update
 
 
 from db import db
-from models import RegisterID, Trainee_infoBase, Trainee_info,RegisterUpdate
+from models import RegisterID, Trainee_infobase, Trainee_info,RegisterUpdate
 
 router = APIRouter()
 
 
 @router.post("/", response_model=int, status_code=status.HTTP_201_CREATED)
-async def create_trainee_info(trainee_info_dict: Trainee_infoBase):
+async def create_trainee_info(trainee_info_dict: Trainee_infobase):
     sql = insert(Trainee_info).values(trainee_info_dict.dict())
     try:
         return await db.execute(sql)
@@ -21,7 +21,7 @@ async def create_trainee_info(trainee_info_dict: Trainee_infoBase):
             detail=str(e))
 
 
-@router.get("/", response_model=RegisterID , status_code=status.HTTP_201_CREATED)
+@router.get("/", response_model=RegisterID)
 async def get_Trainee_info (id: int = None, disabled: bool = False ):
     """
         # รายละเอียด

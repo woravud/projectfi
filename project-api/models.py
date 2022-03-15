@@ -22,6 +22,10 @@ class Journals(Base):
     id = Column(Integer,Journals_id_seq, primary_key=True, index=True)
     name = Column(String(300,collation='th_TH'), nullable=False )
 
+    @declared_attr
+    def trainee_info_id(cls):
+        return Column(Integer, ForeignKey("trainee_info.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False, unique=False, index=True)
+
 class Register(Base):
     __tablename__ = 'register'
     Register_id_seq = Sequence('Register_id_seq', metadata=Base.metadata)
@@ -33,7 +37,9 @@ class Register(Base):
                         server_onupdate=FetchedValue(), onupdate=func.now())
 
     
-
+    @declared_attr
+    def trainee_info_id(cls):
+        return Column(Integer, ForeignKey("trainee_info.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False, unique=False, index=True)
 class Rounds(Base):
     __tablename__ = 'rounds'
 
@@ -50,7 +56,9 @@ class Rounds(Base):
     datetime_end = Column(DateTime(timezone=True), server_default=func.now())
 
 
-   
+    @declared_attr
+    def trainee_info_id(cls):
+        return Column(Integer, ForeignKey("trainee_info.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False, unique=False, index=True)
 
 class Trainee_info(Base):
     __tablename__  = 'trainee_info'
@@ -69,12 +77,12 @@ class Trainee_info(Base):
     status = Column(Integer,default=0)
     disabled = Column(Boolean, nullable=True, server_default=text("False"))
 
-   
+trainee_info = relationship('journals')   
 
 
 
 
-class Trainee_infoBase(BaseModel):
+class Trainee_infobase(BaseModel):
     status  :Optional[int]
     full_name: Optional[str]
     telephone: Optional[str]
@@ -112,17 +120,18 @@ class RegisterUpdate(BaseModel):
         orm_model = True
 
 
-class RegisterID(Trainee_infoBase):
+class RegisterID(Trainee_infobase):
     id: int
     
-    created_at: datetime = None
-    updated_at: datetime = None
+    created_at: datetime = None 
+    
+    updated_at: datetime  = None
    
 
     class Config:
         orm_model = True
 
-class RoundsBase(BaseModel):
+class Roundsbase(BaseModel):
     id: int
     label: str
     batch: str
